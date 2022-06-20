@@ -35,7 +35,12 @@ def json_cleaner():
         for speakerID in json_to_dictionary.keys():
             for inner_entry in json_to_dictionary[speakerID].values():
                 #print(type(inner_entry))
-                print(inner_entry)
+                #print(inner_entry)
+                if inner_entry == type(str):
+                    if to_exclude1 in inner_entry:
+                        json_to_dictionary.pop(speakerID)
+                    if to_exclude2 in inner_entry:
+                        json_to_dictionary.pop(speakerID)
             '''
             if to_exclude1 in list_item:
                 print("String match successful")
