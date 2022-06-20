@@ -25,10 +25,10 @@ def file_test():
 
 
 def json_cleaner():
-    with open("valid.json", "r+") as f:
+    with open("unprocessed_valid.json", "r+") as f:
         json_to_dictionary = json.load(f)
-        for speakerID in json_to_dictionary.keys():
-            for inner_entry in json_to_dictionary[speakerID].values():
+        for speakerID in list(json_to_dictionary.keys()):
+            for inner_entry in list(json_to_dictionary[speakerID].values()):
                 #print(type(inner_entry))
                 #print(inner_entry)
                 #for entry_value in inner_entry:
@@ -39,6 +39,9 @@ def json_cleaner():
                     if to_exclude2 in inner_entry:
                         print(str(speakerID))
                         json_to_dictionary.pop(speakerID)
+    jsonFile = open("valid.json", 'w')
+    jsonFile.write(json.dumps(json_to_dictionary, indent=2))
 
 
 json_cleaner()
+
