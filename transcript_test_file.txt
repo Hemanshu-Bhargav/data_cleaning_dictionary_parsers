@@ -1,0 +1,2 @@
+#test_string1 = "input/images/kitchen.jpg"
+#test_string2 = "tear [as in tear up]"
