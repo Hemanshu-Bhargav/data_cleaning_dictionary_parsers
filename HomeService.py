@@ -81,8 +81,8 @@ def sortDataset():
                 google_colab_path = "/content/drive/MyDrive/HomeService/" + newfilename
                 train_json_entries_dictionary[speakerID] = {
                     "file": google_colab_path,
-                    "words": oldMappings[speakerID],
-                    "length": get_duration(wav_path)
+                    "length": get_duration(wav_path),
+                    "words": oldMappings[speakerID]
                 }
                 print(person+" --> "+session+": "+ str(fileNumber+1) + " of " + str(len(wavFiles)) + " : " + str(int((100*(fileNumber+1))/len(wavFiles)))+ "% complete", end='\r')
             print('')
