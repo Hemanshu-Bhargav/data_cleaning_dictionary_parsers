@@ -87,6 +87,8 @@ def sortDataset():
                 words = os.listdir(wordsPath)
                 #print("Words is " + str(words))
 
+                #temp_words_dictionary = {}
+                #train_json_entries_dictionary = {}
                 '''For each transcript do the following. Enumerate is just to track files using filenumber iterator variable'''
                 for fileNumber, transcript in enumerate(words):
 
@@ -100,8 +102,9 @@ def sortDataset():
                         '''
                         train_json_entries_dictionary[speakerID+transcript.replace('.txt', '')] = \
                             {
-                            "words": f.readlines()[0].rstrip()
+                                "words": f.readlines()[0].rstrip()
                             }
+                        #temp_words_dictionary['words'] = train_json_entries_dictionary[speakerID+transcript.replace('.txt', '')].values()
 
                     '''tempWavFile = /Dysarthric_Processing_Hemanshu/datasets/extracted/TORGO/F01/session/wav_headMic/001.wav
                        We replace transcript with .wav instead of reading the directory for convenience since the files have the same nomenclature'''
@@ -119,30 +122,42 @@ def sortDataset():
                         '''
                         train_json_entries_dictionary[speakerID+transcript.replace('.txt', '')] =\
                             {
-                            "file" : newfile,
+                            "wav" : newfile,
                             "length": get_duration(wav_path)
                             } 
                         '''
                         google_colab_path = "/content/drive/MyDrive/TORGO/" + newfile
-                        train_json_entries_dictionary[speakerID+transcript.replace('.txt', '')]['file'] = google_colab_path
                         train_json_entries_dictionary[speakerID+transcript.replace('.txt', '')]['length'] = get_duration(wav_path)
+                        train_json_entries_dictionary[speakerID+transcript.replace('.txt', '')]['wav'] = google_colab_path
+
+                        '''
+                        print(type(train_json_entries_dictionary))
+                        for entry in list(train_json_entries_dictionary.keys()):
+                            for inner_entry in list(train_json_entries_dictionary[entry]):
+                                #print(inner_entry)
+                                train_json_entries_dictionary.pop('words')
+                        train_json_entries_dictionary = train_json_entries_dictionary | temp_words_dictionary
+                        '''
                     else:
                         # print(transcript.replace('.txt', '.wav') + " was not found in wav_headMic/, checking wav_arrayMic/...", end = '')
                         '''tempWavFile = /Dysarthric_Processing_Hemanshu/datasets/extracted/TORGO/F01/session/wav_arrayMic/0001.wav '''
                         tempWavFile = os.path.join(wavFileAltPath,transcript.replace('.txt', '.wav'))
                         print("New tempWavFile is " + str(tempWavFile))
+
                         if os.path.isfile(tempWavFile):
-                            '''Reassign newfile to TORGO_F01_Session1_0001.wav'''
+                            #Reassign newfile to TORGO_F01_Session1_0001.wav
                             google_colab_path = c_p(tempWavFile, transcript.replace('.txt', '.wav'), destPath, speakerID+transcript.replace('.txt', '.wav'))
                             print("Newfile has been reassigned to google_colab_path" + str(google_colab_path))
                             train_json_entries_dictionary[speakerID+transcript.replace('.txt', '')] =\
                                 {
-                                "file" : google_colab_path
+                                "wav" : google_colab_path
                                 }
                             # print(" found, storing this record.")
+                        
                         else:
                             # print(" not found, skipping this record")
                             break
+
 
                         ''' Progress: ex. F02: 1824 of 4859: 37% complete '''
                     print(person+" --> "+session+": "+ str(fileNumber+1) + " of " + str(len(words)) + " : " + str(int((100*(fileNumber+1))/len(words)))+ "% complete", end='\r')
@@ -158,10 +173,8 @@ The default path definition is the current working directory C:/Users/Hemanshu/D
  + code/datasets resulting in C:/Users/Hemanshu/Desktop/dysarthria_speechbrain-main/Dysarthric_Processing_Hemanshu/code/datasets
  
 dataset = TORGO, again for modularity
-
 sourcePath = C:/Users/Hemanshu/Desktop/dysarthria_speechbrain-main/Dysarthric_Processing_Hemanshu/code/datasets + ../datasets/extracted + ../extracted/TORGO
 resulting C:/Users/Hemanshu/Desktop/dysarthria_speechbrain-main/Dysarthric_Processing_Hemanshu/code/datasets/extracted/TORGO
-
 destPath = C:/Users/Hemanshu/Desktop/dysarthria_speechbrain-main/Dysarthric_Processing_Hemanshu/code/datasets/sorted/TORGO
 '''
 path = os.path.join(os.getcwd(), 'datasets')

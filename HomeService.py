@@ -80,7 +80,7 @@ def sortDataset():
                 wav_path = os.path.join(sourcePath, "audio", person, session, tempWavFile)
                 google_colab_path = "/content/drive/MyDrive/HomeService/" + newfilename
                 train_json_entries_dictionary[speakerID] = {
-                    "file": google_colab_path,
+                    "wav": google_colab_path,
                     "length": get_duration(wav_path),
                     "words": oldMappings[speakerID]
                 }
