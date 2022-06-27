@@ -6,11 +6,6 @@ to_exclude1 = "jpg"
 to_exclude2 = "["
 file_list = []
 # If words field contains exclusion criteria, delete the JSON speakerID key-value pair
-#test_string1 = "input/images/kitchen.jpg"
-#test_string2 = "tear [as in tear up]"
-
-# extract outerkey (speakerID) and words field
-# save speakerIDs in
 
 def file_test():
     with open("transcript_test_file.txt", "r") as f:
@@ -29,9 +24,6 @@ def json_cleaner():
         json_to_dictionary = json.load(f)
         for speakerID in list(json_to_dictionary.keys()):
             for inner_entry in list(json_to_dictionary[speakerID].values()):
-                #print(type(inner_entry))
-                #print(inner_entry)
-                #for entry_value in inner_entry:
                 if isinstance(inner_entry, str):
                     if to_exclude1 in inner_entry:
                         print(str(speakerID))
@@ -41,7 +33,8 @@ def json_cleaner():
                         json_to_dictionary.pop(speakerID)
         inner_key_order = ("wav", "length", "words")
         #for speakerID in json_to_dictionary:
-        json_to_dictionary[speakerID] = [ordered(entry, inner_key_order) for entry in json_to_dictionary[speakerID]]
+        #json_to_dictionary[speakerID] = [ordered(entry, inner_key_order) for entry in json_to_dictionary[speakerID]]
+        json_to_dictionary[speakerID] = [ordered(entry, json_to_dictionary[speakerID][2][1][0]) for entry in json_to_dictionary[speakerID]]
 
         #for speakerID in list(json_to_dictionary):
             #print(json_to_dictionary[speakerID])  #print(json_to_dictionary[speakerID].keys())   #print(json_to_dictionary[speakerID].values())

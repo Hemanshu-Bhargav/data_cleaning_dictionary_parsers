@@ -163,7 +163,7 @@ def sortDataset():
                     print(person+" --> "+session+": "+ str(fileNumber+1) + " of " + str(len(words)) + " : " + str(int((100*(fileNumber+1))/len(words)))+ "% complete", end='\r')
                     print('')
     jsonFile = open(os.path.join(destPath, "dataset.json"), 'w')
-    jsonFile.write(json.dumps(train_json_entries_dictionary))
+    jsonFile.write(json.dumps(train_json_entries_dictionary, indent=2))
     print('wrote dataset mapping to', os.path.join(destPath, "dataset.json"))
 
 
