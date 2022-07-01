@@ -1,6 +1,7 @@
 import json
 
-files=['dataset.json', 'valid.json', 'test.json']
+#files=['dataset.json','valid.json', 'test.json']
+files=['dataset.json', 'test.json']
 
 def merge_JsonFiles(filename):
     result = {}
